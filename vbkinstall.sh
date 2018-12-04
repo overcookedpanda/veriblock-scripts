@@ -22,12 +22,12 @@ LATEST_NODECORE=`curl -s https://testnet.explore.veriblock.org/api/stats/downloa
 LATEST_BOOTSTRAP=`curl -s https://testnet.explore.veriblock.org/api/stats/download | jq -r .bootstrapfile`
 NODECORE="$(cut -d'/' -f9 <<<$LATEST_NODECORE)"
 BOOTSTRAP="$(cut -d'/' -f4 <<<$LATEST_BOOTSTRAP)"
-NODECORE_DIR="$(echo "$NODECORE" | cut -d'.' -f1-3)"
-TESTNET_DIR="$(echo "$NODECORE" | cut -d'-' -f2,4 | cut -d'.' -f1-3)"
+NODECORE_ALL_DIR="$(echo "$NODECORE" | cut -d'.' -f1-3)"
+NODECORE_DIR="$(echo "$NODECORE" | cut -d'-' -f2,4 | cut -d'.' -f1-3)"
 #
 echo "Creating directory for latest release..."
-mkdir $NODECORE_DIR
-cd $NODECORE_DIR
+mkdir $NODECORE_ALL_DIR
+cd $NODECORE_ALL_DIR
 #
 # Download latest version of nodecore & bootstrap
 #
@@ -35,7 +35,7 @@ echo "Downloading $LATEST_NODECORE..."
 wget -q --show-progress $LATEST_NODECORE
 echo "Extracting $NODECORE..."
 tar xvf $NODECORE
-cd $TESTNET_DIR
+cd $NODECORE_DIR
 mkdir testnet
 cd testnet
 echo "Downloading $LATEST_BOOTSTRAP..."
