@@ -43,5 +43,6 @@ wget -q --show-progress $LATEST_BOOTSTRAP
 echo "Extracting $BOOTSTRAP for fast sync..."
 unzip $BOOTSTRAP
 cd ../bin
+chmod +x nodecore
 echo "Starting NodeCore..."
 ./nodecore
