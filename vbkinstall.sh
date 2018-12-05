@@ -1,6 +1,6 @@
-#!/usr/bin/env bash	
-#	
-# Check system to make sure it can support running NodeCore	
+#!/usr/bin/env bash
+#
+# Check system to make sure it can support running NodeCore
 #
 echo "Checking to see if your system meets the minimum requirements for NodeCore to run..."
 TOTALMEM=$(cat /proc/meminfo | head -n 1 | tr -d -c 0-9)
@@ -14,66 +14,66 @@ FREESPACE=$(df -H "$HOME" | awk 'NR==2 { print $2 }' | tr -d -c 0-9)
 echo Free Disk Space: $FREESPACE GB
 if [ $TOTALMEM -lt 4 ]
 then
-echo "Sorry, but this system needs at least 4GB of RAM for NodeCore to run.  Exiting Install..."
-exit
+    echo "Sorry, but this system needs at least 4GB of RAM for NodeCore to run.  Exiting Install..."
+    exit
 elif [ $TOTALCORES -lt 2 ]
 then
-echo "Sorry, but this system needs at least 2 cores for NodeCore to run.  Exiting Install..."
-exit
+    echo "Sorry, but this system needs at least 2 cores for NodeCore to run.  Exiting Install..."
+    exit
 elif [ $TOTALDISK -lt 50 ]
 then
-echo "Sorry, but this system needs at least 50GB total disk space for NodeCore to run.  Exiting Install..."
-exit
+    echo "Sorry, but this system needs at least 50GB total disk space for NodeCore to run.  Exiting Install..."
+    exit
 elif [ $FREESPACE -lt 15 ]
 then
-echo "Sorry, but this system needs at least 15GB free disk space for NodeCore to run.  Exiting Install..."
-exit
+    echo "Sorry, but this system needs at least 15GB free disk space for NodeCore to run.  Exiting Install..."
+    exit
 else
-echo "Your system is suitable, continuing installation of NodeCore..."
+    echo "Your system is suitable, continuing installation of NodeCore..."
 fi
 #
 # Install Java:
 #
 echo "Installing Java if needed..."
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' software-properties-common|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' software-properties-common | grep "install ok installed" | cut -d' ' -f2)
 echo Checking for software-properties-common: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "No software-properties-common. Setting up software-properties-common."
-  sudo apt-get update
-  sudo apt-get install software-properties-common -qq
+    echo "No software-properties-common. Setting up software-properties-common."
+    sudo apt-get update
+    sudo apt-get install software-properties-common -qq
 fi
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' oracle-java8-installer|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' oracle-java8-installer | grep "install ok installed" | cut -d' ' -f2)
 echo Checking for oracle-java8-installer: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "No oracle-java8-installer. Setting up oracle-java8-installer."
+    echo "No oracle-java8-installer. Setting up oracle-java8-installer."
     if ! grep -q "ppa:webupd8team/java" /etc/apt/sources.list; then
-    echo "Adding repo for Java installation..."
-    sudo add-apt-repository ppa:webupd8team/java -y
+        echo "Adding repo for Java installation..."
+        sudo add-apt-repository ppa:webupd8team/java -y
     fi
-  sudo apt-get update
-  sudo apt-get install oracle-java8-installer -qq
+    sudo apt-get update
+    sudo apt-get install oracle-java8-installer -qq
 fi
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' oracle-java8-set-default|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' oracle-java8-set-default|grep "install ok installed" | cut -d' ' -f2)
 echo Checking for oracle-java8-set-default: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "No oracle-java8-set-default. Setting up oracle-java8-set-default."
-  sudo apt-get install oracle-java8-set-default -qq
+    echo "No oracle-java8-set-default. Setting up oracle-java8-set-default."
+    sudo apt-get install oracle-java8-set-default -qq
 fi
 #
 # Install Other Dependencies:
 #
 echo "Installing other dependencies if needed..."
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' jq|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' jq | grep "install ok installed" | cut -d' ' -f2)
 echo Checking for jq: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "No jq. Setting up jq."
-  sudo apt-get install jq -qq
+    echo "No jq. Setting up jq."
+    sudo apt-get install jq -qq
 fi
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' unzip|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' unzip | grep "install ok installed" | cut -d' ' -f2)
 echo Checking for unzip: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "No unzip. Setting up unzip."
-  sudo apt-get install unzip -qq
+    echo "No unzip. Setting up unzip."
+    sudo apt-get install unzip -qq
 fi
 #
 # Get url for latest nodecore version
@@ -102,6 +102,8 @@ echo "Downloading $LATEST_BOOTSTRAP..."
 wget -q --show-progress $LATEST_BOOTSTRAP
 echo "Extracting $BOOTSTRAP for fast sync..."
 unzip $BOOTSTRAP
+echo "Removing $BOOTSTRAP..."
+rm $BOOTSTRAP
 cd ../bin
 chmod +x nodecore
 echo "Starting NodeCore..."
