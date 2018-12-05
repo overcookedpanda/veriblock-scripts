@@ -1,3 +1,7 @@
+#!/usr/bin/env bash	
+#	
+# Check system to make sure it can support running NodeCore	
+#
 echo "Checking to see if your system meets the minimum requirements for NodeCore to run..."
 TOTALMEM=$(cat /proc/meminfo | head -n 1 | tr -d -c 0-9)
 TOTALMEM=$(($TOTALMEM/1000000))
