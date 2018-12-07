@@ -75,6 +75,12 @@ if [ "" == "$PKG_OK" ]; then
     echo "No unzip. Setting up unzip."
     sudo apt-get install unzip -qq
 fi
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' screen | grep "install ok installed" | cut -d' ' -f2)
+echo Checking for screen: $PKG_OK
+if [ "" == "$PKG_OK" ]; then
+    echo "No screen. Setting up screen."
+    sudo apt-get install screen -qq
+fi
 #
 # Get url for latest nodecore version
 #
