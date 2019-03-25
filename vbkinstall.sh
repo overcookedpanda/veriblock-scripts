@@ -84,10 +84,10 @@ fi
 #
 # Get url for latest nodecore version
 #
-LATEST_NODECORE=`curl -s https://testnet.explore.veriblock.org/api/stats/download | jq -r .nodecore_all_tar`
-LATEST_BOOTSTRAP=`curl -s https://testnet.explore.veriblock.org/api/stats/download | jq -r .bootstrapfile_zip`
+LATEST_NODECORE=`curl -s https://explore.veriblock.org/api/stats/download | jq -r .nodecore_all_tar`
+#LATEST_BOOTSTRAP=`curl -s https://testnet.explore.veriblock.org/api/stats/download | jq -r .bootstrapfile_zip`
 NODECORE="$(cut -d'/' -f9 <<<$LATEST_NODECORE)"
-BOOTSTRAP="$(cut -d'/' -f4 <<<$LATEST_BOOTSTRAP)"
+#BOOTSTRAP="$(cut -d'/' -f4 <<<$LATEST_BOOTSTRAP)"
 NODECORE_ALL_DIR="$(echo "$NODECORE" | cut -d'.' -f1-3)"
 NODECORE_DIR="$(echo "$NODECORE" | cut -d'-' -f2,4 | cut -d'.' -f1-3)"
 #
@@ -102,14 +102,14 @@ wget -q --show-progress $LATEST_NODECORE
 echo "Extracting $NODECORE..."
 tar xvf $NODECORE
 cd $NODECORE_DIR
-mkdir testnet
-cd testnet
-echo "Downloading $LATEST_BOOTSTRAP..."
-wget -q --show-progress $LATEST_BOOTSTRAP
-echo "Extracting $BOOTSTRAP for fast sync..."
-unzip $BOOTSTRAP
-echo "Removing $BOOTSTRAP..."
-rm $BOOTSTRAP
+#mkdir testnet
+#cd testnet
+#echo "Downloading $LATEST_BOOTSTRAP..."
+#wget -q --show-progress $LATEST_BOOTSTRAP
+#echo "Extracting $BOOTSTRAP for fast sync..."
+#unzip $BOOTSTRAP
+#echo "Removing $BOOTSTRAP..."
+#rm $BOOTSTRAP
 cd ../bin
 chmod +x nodecore
 echo "Starting NodeCore..."
